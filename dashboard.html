@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - HelpDesk</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <h2>HelpDesk</h2>
+    <nav>
+      <a href="#">Dashboard</a>
+      <a href="chamados.html">Chamados</a>
+      <a href="#">Usuários</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <header class="topbar">
+      <span id="boasVindas">Bem-vindo</span>
+      <button class="logout">Sair</button>
+    </header>
+
+    <section class="content">
+      <h1>Dashboard</h1>
+
+      <div class="cards">
+
+        <div class="card">
+          <h3>Chamados Abertos</h3>
+          <p id="abertos">0</p>
+        </div>
+
+        <div class="card">
+          <h3>Em Andamento</h3>
+          <p id="andamento">0</p>
+        </div>
+
+        <div class="card">
+          <h3>Finalizados</h3>
+          <p id="finalizados">0</p>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script type="module" src="js/dashboard.js"></script>
+
+
+</body>
+</html>

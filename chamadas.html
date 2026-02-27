@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chamados - HelpDesk</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <h2>HelpDesk</h2>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="#">Chamados</a>
+      <a href="#">Usuários</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <header class="topbar">
+      <span>Chamados</span>
+      <button class="logout">Sair</button>
+    </header>
+
+    <section class="content">
+
+      <div class="card form-card">
+        <h3>Abrir Novo Chamado</h3>
+        <form id="formChamado">
+          <input type="text" id="titulo" placeholder="Título do problema" required />
+          <textarea id="descricao" placeholder="Descreva o problema..." required></textarea>
+          <button type="submit">Abrir Chamado</button>
+        </form>
+      </div>
+
+      <div class="card table-card">
+        <h3>Lista de Chamados</h3>
+
+        <table id="chamadosTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script type="module" src="js/chamados.js"></script>
+
+</body>
+</html>
