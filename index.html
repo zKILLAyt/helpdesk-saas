@@ -1,32 +1,48 @@
 <!doctype html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Login - HelpDesk</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body class="login-body">
-    <div class="login-wrapper">
-      <div class="login-card">
-        <h1>HelpDesk</h1>
-        <p>Acesse sua conta</p>
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - HelpDesk</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+</head>
 
-        <form>
-          <input type="email" placeholder="E-mail" required />
-          <input type="password" placeholder="Senha" required />
-          <button type="submit">Entrar</button>
-        </form>
-      </div>
+<body class="login-body">
+
+  <div class="login-wrapper">
+    <div class="login-card">
+
+      <h1>HelpDesk</h1>
+      <p id="formSubtitle">Acesse sua conta</p>
+
+      <form id="authForm">
+        <input type="email" id="email" placeholder="E-mail" required />
+        <input type="password" id="password" placeholder="Senha" required />
+        <button type="submit" id="submitBtn">Entrar</button>
+      </form>
+
+      <p id="toggleText">
+        Não tem conta?
+        <span id="toggleMode" style="color: #2563eb; cursor: pointer;">
+          Criar conta
+        </span>
+      </p>
+
+      <p id="errorMsg" style="color:red; margin-top:10px;"></p>
+
     </div>
+  </div>
 
-    <script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+  // 🔥 SUA CONFIG
   const firebaseConfig = {
     apiKey: "AIzaSyDvBoopJzCdywnDdy52Z-iSiCahOShQkAw",
     authDomain: "helpdesk-saas-c3bcf.firebaseapp.com",
@@ -39,22 +55,91 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  const form = document.querySelector("form");
+  const form = document.getElementById("authForm");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const toggleMode = document.getElementById("toggleMode");
+  const formSubtitle = document.getElementById("formSubtitle");
+  const submitBtn = document.getElementById("submitBtn");
+  const errorMsg = document.getElementById("errorMsg");
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  let modoLogin = true;
 
-    const email = form.querySelector("input[type='email']").value;
-    const senha = form.querySelector("input[type='password']").value;
-
-    try {
-      await signInWithEmailAndPassword(auth, email, senha);
+  // 🔐 Se já estiver logado → vai pro dashboard
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
       window.location.href = "dashboard.html";
-    } catch (error) {
-      alert("Erro ao fazer login: " + error.message);
     }
   });
+
+  // 🔄 Alternar modo
+  toggleMode.addEventListener("click", () => {
+    modoLogin = !modoLogin;
+    errorMsg.innerText = "";
+
+    if (modoLogin) {
+      formSubtitle.innerText = "Acesse sua conta";
+      submitBtn.innerText = "Entrar";
+      toggleText.innerHTML = `
+        Não tem conta?
+        <span id="toggleMode" style="color:#2563eb;cursor:pointer;">Criar conta</span>
+      `;
+    } else {
+      formSubtitle.innerText = "Crie sua conta";
+      submitBtn.innerText = "Criar conta";
+      toggleText.innerHTML = `
+        Já tem conta?
+        <span id="toggleMode" style="color:#2563eb;cursor:pointer;">Entrar</span>
+      `;
+    }
+
+    // Reatribuir evento porque recriamos o HTML
+    document.getElementById("toggleMode").addEventListener("click", arguments.callee);
+  });
+
+  // 🚀 Login ou Cadastro
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorMsg.innerText = "";
+
+    const email = emailInput.value;
+    const senha = passwordInput.value;
+
+    try {
+      if (modoLogin) {
+        await signInWithEmailAndPassword(auth, email, senha);
+      } else {
+        await createUserWithEmailAndPassword(auth, email, senha);
+      }
+
+      window.location.href = "dashboard.html";
+
+    } catch (error) {
+      tratarErro(error.code);
+    }
+  });
+
+  function tratarErro(code) {
+    if (code === "auth/email-already-in-use")
+      errorMsg.innerText = "Este e-mail já está cadastrado.";
+
+    else if (code === "auth/invalid-email")
+      errorMsg.innerText = "E-mail inválido.";
+
+    else if (code === "auth/weak-password")
+      errorMsg.innerText = "Senha deve ter pelo menos 6 caracteres.";
+
+    else if (code === "auth/user-not-found")
+      errorMsg.innerText = "Usuário não encontrado.";
+
+    else if (code === "auth/wrong-password")
+      errorMsg.innerText = "Senha incorreta.";
+
+    else
+      errorMsg.innerText = "Erro: " + code;
+  }
+
 </script>
-    </script>
-  </body>
+
+</body>
 </html>
