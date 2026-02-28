@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Usuários - HelpDesk</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <h2>HelpDesk</h2>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="chamadas.html">Chamados</a>
+      <a href="usuarios.html">Usuários</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <header class="topbar">
+      <span>Usuários</span>
+      <button class="logout">Sair</button>
+    </header>
+
+    <section class="content">
+
+      <div class="card table-card">
+        <h3>Lista de Usuários</h3>
+
+        <table id="usuariosTable">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Função</th>
+              <th>Criado em</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script type="module" src="js/usuarios.js"></script>
+
+</body>
+</html>
